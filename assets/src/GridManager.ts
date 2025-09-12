@@ -32,6 +32,8 @@ export class GridManager extends Component
     
     private AdjustCardPanelsWidthHeight() 
     {
+        if (!this.cardPrefab) return;
+        
         let uiTrans = this.cardPrefab.data.getComponent(UITransform);
         let cardPanelUILayout = this.cardPanel.getComponent(Layout);
         let cardPanelUITrans = this.cardPanel.getComponent(UITransform);
@@ -40,17 +42,19 @@ export class GridManager extends Component
         console.log("uiTrans " + uiTrans != null);
         console.log("uiLayout" + cardPanelUILayout != null);
 
-        // if (uiTrans != null && uiLayout != null)
-        // {
-            let panelXLength = (this.rows * uiTrans.width) + (cardPanelUILayout.paddingLeft + cardPanelUILayout.paddingRight) + ((this.rows - 1) * cardPanelUILayout.spacingX);
-            let panelYLength = (this.cols * uiTrans.height) + (cardPanelUILayout.paddingTop + cardPanelUILayout.paddingBottom) + ((this.cols - 1) * cardPanelUILayout.spacingY);
-            
-            // cardPanelUITrans.width(panelXLength);
-            // cardPanelUITrans.height(panelYLength);
+        if (uiTrans != null && cardPanelUILayout != null)
+        {
+            let panelXLength = (this.rows * uiTrans.width) + (cardPanelUILayout.paddingLeft + cardPanelUILayout.paddingRight) 
+                                    + ((this.rows - 1) * cardPanelUILayout.spacingX);
+            let panelYLength = (this.cols * uiTrans.height) + (cardPanelUILayout.paddingTop + cardPanelUILayout.paddingBottom) 
+                                    + ((this.cols - 1) * cardPanelUILayout.spacingY);
+
+            cardPanelUITrans.width = panelXLength;
+            cardPanelUITrans.height = panelYLength;
 
             console.log("panelXLength: " + panelXLength);
             console.log("panelYLength: " + panelYLength);
-        // }
+        }
     }
 
     m_CreateGrid(rows: number, cols: number) 
@@ -58,13 +62,16 @@ export class GridManager extends Component
         this.cardPanel.removeAllChildren(); // removes all children from parent node
         // add disable logic if required
 
-        for (let i = 0; i < rows; i++) 
+        if (this.cardPrefab)
         {
-            for (let j = 0; j < cols; j++)
+            for (let i = 0; i < rows; i++) 
             {
-                let card = instantiate(this.cardPrefab);
-                this.cardPanel.addChild(card);
-            }    
+                for (let j = 0; j < cols; j++)
+                {
+                    let card = instantiate(this.cardPrefab);
+                    this.cardPanel.addChild(card);
+                }    
+            }
         }
     }
 }

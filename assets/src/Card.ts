@@ -22,7 +22,7 @@ export class Card extends Component {
 
     }
 
-    public m_flipCard() 
+    m_flipCard() 
     {
         console.log("Card flipped!");
 
