@@ -1,0 +1,31 @@
+{
+  "__version__": "1.0.4",
+  "sorting-layer": {
+    "layers": [
+      {
+        "id": 0,
+        "name": "default",
+        "value": 0
+      },
+      {
+        "id": 2,
+        "name": "Sorting Layer 1",
+        "value": 1
+      },
+      {
+        "id": 3,
+        "name": "Sorting Layer 2",
+        "value": 2
+      }
+    ],
+    "increaseId": 3
+  },
+  "physics": {
+    "gravity": {
+      "y": -9
+    }
+  },
+  "script": {
+    "useDefineForClassFields": true
+  }
+}

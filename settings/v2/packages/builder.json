@@ -1,0 +1,51 @@
+{
+  "__version__": "1.3.5",
+  "textureCompressConfig": {
+    "userPreset": {
+      "default": {
+        "name": "default",
+        "options": {
+          "miniGame": {
+            "etc1_rgb": "fast",
+            "pvrtc_4bits_rgb": "fast"
+          },
+          "android": {
+            "astc_8x8": "-medium",
+            "etc1_rgb": "fast"
+          },
+          "ios": {
+            "astc_8x8": "-medium",
+            "pvrtc_4bits_rgb": "fast"
+          },
+          "web": {
+            "astc_8x8": "-medium",
+            "etc1_rgb": "fast",
+            "pvrtc_4bits_rgb": "fast"
+          }
+        }
+      },
+      "transparent": {
+        "name": "transparent",
+        "options": {
+          "miniGame": {
+            "etc1_rgb_a": "fast",
+            "pvrtc_4bits_rgb_a": "fast"
+          },
+          "android": {
+            "astc_8x8": "-medium",
+            "etc1_rgb_a": "fast"
+          },
+          "ios": {
+            "astc_8x8": "-medium",
+            "pvrtc_4bits_rgb_a": "fast"
+          },
+          "web": {
+            "astc_8x8": "-medium",
+            "etc1_rgb_a": "fast",
+            "pvrtc_4bits_rgb_a": "fast"
+          }
+        }
+      }
+    }
+  }
+}
