@@ -1,42 +1,41 @@
-import { _decorator, Component, Node, Prefab, instantiate, UITransform, Layout } from 'cc';
+import { _decorator, Component, Node, UITransform, Layout } from 'cc';
+import { CardManager } from './CardManager';
 const { ccclass, property } = _decorator;
 
 @ccclass('GridManager')
 export class GridManager extends Component 
 {
     @property({type: Number})
-    rows: number = 4;
+    m_Rows: number = 4;
     @property({type: Number})
-    cols: number = 4;
+    m_Cols: number = 4;
 
     @property({type: Node})
-    cardPanel: Node; // create and set the panel
+    m_StartPoint: Node = null;
 
-    @property({type: Prefab})
-    cardPrefab: Prefab;
-
-    @property({type: Node})
-    startPoint: Node = null;
+    @property({type: CardManager})
+    m_CardManager: CardManager = null;
 
     start() 
     {
         console.log("finding card prefab root");
         
-        this.cardPanel.setPosition(this.startPoint.getPosition());
-        console.log("startPoint position: " + this.startPoint.getPosition());
-        console.log("cardPanel position: " + this.cardPanel.getPosition());
+        this.m_CardManager.m_CardPanel.setPosition(this.m_StartPoint.getPosition());
+        console.log("startPoint position: " + this.m_StartPoint.getPosition());
+        console.log("cardPanel position: " + this.m_CardManager.m_CardPanel.getPosition());
 
-        this.AdjustCardPanelsWidthHeight();
-        this.m_CreateGrid(this.rows, this.cols);
+        this.m_CardManager.fn_Init(this.m_Rows, this.m_Cols);
+        this.fn_AdjustCardPanelsWidthHeight();
+        this.m_CardManager.fn_CreateCardsAndSetData(this.m_Rows, this.m_Cols);
     }
     
-    private AdjustCardPanelsWidthHeight() 
+    private fn_AdjustCardPanelsWidthHeight() 
     {
-        if (!this.cardPrefab) return;
+        if (!this.m_CardManager.m_CardPrefab) return;
         
-        let uiTrans = this.cardPrefab.data.getComponent(UITransform);
-        let cardPanelUILayout = this.cardPanel.getComponent(Layout);
-        let cardPanelUITrans = this.cardPanel.getComponent(UITransform);
+        let uiTrans = this.m_CardManager.m_CardPrefab.data.getComponent(UITransform);
+        let cardPanelUILayout = this.m_CardManager.m_CardPanel.getComponent(Layout);
+        let cardPanelUITrans = this.m_CardManager.m_CardPanel.getComponent(UITransform);
         
         console.log("Adjust card panels width height: uiTrans");
         console.log("uiTrans " + uiTrans != null);
@@ -44,34 +43,16 @@ export class GridManager extends Component
 
         if (uiTrans != null && cardPanelUILayout != null)
         {
-            let panelXLength = (this.rows * uiTrans.width) + (cardPanelUILayout.paddingLeft + cardPanelUILayout.paddingRight) 
-                                    + ((this.rows - 1) * cardPanelUILayout.spacingX);
-            let panelYLength = (this.cols * uiTrans.height) + (cardPanelUILayout.paddingTop + cardPanelUILayout.paddingBottom) 
-                                    + ((this.cols - 1) * cardPanelUILayout.spacingY);
+            let panelXLength = (this.m_Rows * uiTrans.width) + (cardPanelUILayout.paddingLeft + cardPanelUILayout.paddingRight) 
+                                    + ((this.m_Rows - 1) * cardPanelUILayout.spacingX);
+            let panelYLength = (this.m_Cols * uiTrans.height) + (cardPanelUILayout.paddingTop + cardPanelUILayout.paddingBottom) 
+                                    + ((this.m_Cols - 1) * cardPanelUILayout.spacingY);
 
             cardPanelUITrans.width = panelXLength;
             cardPanelUITrans.height = panelYLength;
 
             console.log("panelXLength: " + panelXLength);
             console.log("panelYLength: " + panelYLength);
-        }
-    }
-
-    m_CreateGrid(rows: number, cols: number) 
-    {
-        this.cardPanel.removeAllChildren(); // removes all children from parent node
-        // add disable logic if required
-
-        if (this.cardPrefab)
-        {
-            for (let i = 0; i < rows; i++) 
-            {
-                for (let j = 0; j < cols; j++)
-                {
-                    let card = instantiate(this.cardPrefab);
-                    this.cardPanel.addChild(card);
-                }    
-            }
         }
     }
 }

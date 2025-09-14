@@ -33,9 +33,12 @@ export class CardRotator extends Component
                 this.m_RotTimer += deltaTime * this.m_RotSpeed;
                 let t = this.m_RotTimer / this.m_RotMaxTime;
                 
+                console.log("time: " + t);
+
                 if (t >= 0.5)
                 {
-                    this.displayCard(true);
+                    console.log("time is halved: display card: " + t);
+                    this.fn_displayCard(true);
                 }
 
                 let scale = math.lerp(this.m_XScale, -this.m_XScale, t);
@@ -52,13 +55,13 @@ export class CardRotator extends Component
         }
     }
 
-    public m_TriggerRotation() 
+    public fn_TriggerRotation() 
     {
         console.log("Card flipped!");
         this.m_CanRotate = true;
     }
 
-    displayCard(showCard: boolean) 
+    fn_displayCard(showCard: boolean) 
     {
         this.front.active = showCard;
         this.back.active = !showCard;
