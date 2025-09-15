@@ -136,8 +136,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 50,
-      "height": 70
+      "width": 70,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -269,8 +269,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 50,
-      "height": 70
+      "width": 70,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -353,8 +353,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 50,
-      "height": 70
+      "width": 70,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -491,7 +491,7 @@
     },
     "component": "",
     "_componentId": "e1351CLExRJu4ARd+KrVXJM",
-    "handler": "m_flipCard",
+    "handler": "fn_flipCardOnSelection",
     "customEventData": ""
   },
   {
@@ -508,6 +508,7 @@
     "sprite": {
       "__id__": 11
     },
+    "cardFlipInterval": 1,
     "_id": ""
   },
   {
@@ -526,10 +527,10 @@
       "__id__": 24
     },
     "front": {
-      "__id__": 2
+      "__id__": 8
     },
     "back": {
-      "__id__": 8
+      "__id__": 2
     },
     "_id": ""
   },

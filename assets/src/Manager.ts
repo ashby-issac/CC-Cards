@@ -1,20 +1,26 @@
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, ccenum, Component, game, Node } from 'cc';
+import { GameManager } from './GameManager';
 const { ccclass, property } = _decorator;
+
+export enum MANAGER
+{
+    M_UI,
+    M_GRID,
+    M_CARD
+}
+ccenum(MANAGER);
 
 @ccclass('Manager')
 export class Manager extends Component 
 {
-    @property({type: [Node], serializable: true})
-    public nodes: Node[] = [];
+    @property({type: MANAGER})
+    public m_ManagerID: MANAGER;
 
-    start() 
+    protected m_GameManager: GameManager;
+
+    public fn_InitManager(gameManager: GameManager)
     {
-
-    }
-
-    update(deltaTime: number) 
-    {
-        
+        this.m_GameManager = gameManager;
     }
 }
 

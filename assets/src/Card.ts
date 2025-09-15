@@ -1,20 +1,9 @@
-import { _decorator, ccenum, Component, Node, Color, Sprite } from 'cc';
+import { _decorator, ccenum, Component, Node, Color, Sprite, CCInteger, Enum, cclegacy } from 'cc';
 import { CardRotator } from './CardRotator';
-import { CardManager } from './CardManager';
+import { CardManager, CardTypes } from './CardManager';
+import { MILLI_SEC } from './GridManager';
 const { ccclass, property } = _decorator;
 
-export enum CardType
-{
-    CT_RED = 0, 
-    CT_BLUE = 1, 
-    CT_YELLOW = 2, 
-    CT_GREEN = 3,
-    CT_ORANGE = 4,
-    CT_MAROON = 5,
-    CT_LIGHTBLUE = 6,
-    CT_BLACK = 7
-}
-ccenum(CardType);
 
 @ccclass('Card')
 export class Card extends Component 
@@ -22,26 +11,35 @@ export class Card extends Component
     @property({type: Sprite})
     public sprite: Sprite;
 
-    private m_CardRotator: CardRotator | null = null;
+    @property({type: Number})
+    public cardFlipInterval: number;
+
+    public m_CardRotator: CardRotator | null = null;
     private m_CardManager: CardManager = null;
 
     public m_PosX: number;
     public m_PosY: number;
 
-    public m_CardType: CardType;
+    public m_CardType: CardTypes;
     public m_Color: Color;
 
-    fn_Init(cardType: CardType, color: Color)
+    fn_Init(cardType: CardTypes, color: Color, cardManager: CardManager)
     {
         this.m_CardType = cardType;
         this.m_Color = color;
 
         this.sprite.color = color;
+
+        // getcomp for cardrot
+        let cardRotator = this.node.getComponent(CardRotator);
+        cardRotator.fn_displayCard(false); // by default all cards should be hidden
+        this.m_CardManager = cardManager;
     }
 
     start() 
     {
-        this.m_CardRotator = this.getComponent(CardRotator);
+        if (!this.m_CardRotator)
+            this.m_CardRotator = this.getComponent(CardRotator);
 
         this.m_PosX = this.node.getPosition().x;
         this.m_PosY = this.node.getPosition().y;
@@ -55,10 +53,26 @@ export class Card extends Component
     fn_flipCardOnSelection() 
     {
         console.log("Card flipped!");
+        if (this.m_CardRotator.front.active)
+            return;
 
-        this.m_CardRotator.fn_TriggerRotation();
         this.m_CardManager.fn_InitSelectedCard(this);
-        // onClick -> Flip the card (CardRotator.ts -> for flipping and unflipping the card)
+    }
+
+    public fn_flipAllCards()
+    {
+        if (!this.m_CardRotator)
+            this.m_CardRotator = this.getComponent(CardRotator);
+
+        this.m_CardRotator.fn_TriggerRotation(true);
+        setTimeout(() => {
+            this.m_CardRotator.fn_TriggerRotation(false);
+        }, MILLI_SEC * this.cardFlipInterval);
+    }
+
+    public fn_OnMatchFound()
+    {
+        this.sprite.enabled = false;
     }
 }
 

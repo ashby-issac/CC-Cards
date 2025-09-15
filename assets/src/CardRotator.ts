@@ -10,6 +10,7 @@ export class CardRotator extends Component
     public m_CanRotate: boolean = false;
     public m_RotSpeed: number = 2;
     
+    private m_DisplayCard: boolean = false;
     private m_RotTimer: number = 0;
     private m_XScale: number = 0;
 
@@ -33,13 +34,8 @@ export class CardRotator extends Component
                 this.m_RotTimer += deltaTime * this.m_RotSpeed;
                 let t = this.m_RotTimer / this.m_RotMaxTime;
                 
-                console.log("time: " + t);
-
                 if (t >= 0.5)
-                {
-                    console.log("time is halved: display card: " + t);
-                    this.fn_displayCard(true);
-                }
+                    this.fn_displayCard(this.m_DisplayCard);
 
                 let scale = math.lerp(this.m_XScale, -this.m_XScale, t);
                 this.node.setScale(scale, this.node.getScale().y);
@@ -55,13 +51,14 @@ export class CardRotator extends Component
         }
     }
 
-    public fn_TriggerRotation() 
+    public fn_TriggerRotation(displayCard: boolean) 
     {
         console.log("Card flipped!");
         this.m_CanRotate = true;
+        this.m_DisplayCard = displayCard;
     }
 
-    fn_displayCard(showCard: boolean) 
+    public fn_displayCard(showCard: boolean) 
     {
         this.front.active = showCard;
         this.back.active = !showCard;
